@@ -17,7 +17,8 @@ public class ClientThread implements Runnable{
 
     @Override
     public void run() {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             System.out.println("Client " + numClient + " has been connected.");
 
             new PrintWriter(clientSocket.getOutputStream(), true).println("Client " + numClient);
@@ -31,11 +32,12 @@ public class ClientThread implements Runnable{
                 } else {
                     System.out.println("Client " + numClient + " has been disconnected.");
                     chatServer.clientExitedChat(numClient);
+                    in.close();
+                    clientSocket.close();
                     break;
                 }
             }
         } catch (IOException e) {
-            System.out.println("ERROR!");
             System.out.println(e.getMessage());
         }
     }

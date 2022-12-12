@@ -9,7 +9,8 @@ public class ChatServer implements Runnable{
 
     @Override
     public void run() {
-        try (ServerSocket serverSocket = new ServerSocket(8887)) {
+        try {
+            ServerSocket serverSocket = new ServerSocket(8887);
             System.out.println("Server was enabled. Waiting for new client...");
 
             int numClient = 1;
@@ -25,7 +26,6 @@ public class ChatServer implements Runnable{
                 numClient++;
             }
         } catch (IOException e) {
-            System.out.println("ERROR!");
             System.out.println(e.getMessage());
         }
     }
@@ -36,7 +36,7 @@ public class ChatServer implements Runnable{
 
     public void sendMessageForAllClient(int numClient, String clientMessage) {
         for (int i: mapClient.keySet()) {
-            if (i != numClient) {
+            if (numClient != i) {
                 System.out.println("Sending message to client " + i + "...");
 
                 BufferedWriter outputUser;
@@ -46,7 +46,6 @@ public class ChatServer implements Runnable{
                     outputUser.write("Client " + numClient + ": "  + clientMessage);
                     outputUser.flush();
                 } catch (IOException e) {
-                    System.out.println("ERROR!");
                     System.out.println(e.getMessage());
                 }
             }
