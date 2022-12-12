@@ -39,12 +39,9 @@ public class ChatServer implements Runnable{
             if (numClient != i) {
                 System.out.println("Sending message to client " + i + "...");
 
-                BufferedWriter outputUser;
-
                 try {
-                    outputUser = new BufferedWriter(new OutputStreamWriter(mapClient.get(i).getOutputStream()));
-                    outputUser.write("Client " + numClient + ": "  + clientMessage);
-                    outputUser.flush();
+                    new PrintWriter(mapClient.get(i).getOutputStream(), true).
+                            println("Client " + numClient + ": "  + clientMessage);
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
